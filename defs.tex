@@ -108,3 +108,21 @@
 \def\const{\mathrm{const}}
 
 \def\ie{{\it i.e., }}
+
+\def\filecopy#1#2{
+	\IfFileExists{#1}{
+		\newwrite\copyfile  % open the file to write to
+		\immediate\openout\copyfile=#2
+
+		\newread\file      % open the file to read from
+		\openin\file=#1
+
+		\begingroup\endlinechar=-1
+		\loop\unless\ifeof\file
+		\read\file to\fileline  % Read one line and store it into \fileline
+		%  \fileline\par                   % print the content into the pdf
+		\immediate\write\copyfile{\unexpanded\expandafter{\fileline}}  % print the content to copy.txt
+		\repeat
+		\endgroup
+	}{}
+}
